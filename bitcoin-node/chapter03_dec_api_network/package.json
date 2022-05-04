@@ -1,0 +1,12 @@
+{
+  "name": "chapter03_dec_api_network",
+  "version": "1.0.0",
+  "description": "",
+  "main": "api.js",
+  "scripts": {
+    "start": "npx nodemon api.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

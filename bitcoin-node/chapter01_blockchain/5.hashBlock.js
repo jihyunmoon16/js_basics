@@ -3,11 +3,9 @@ const sha256 = require("sha256");
 
 class Blockchain {
   constructor() {
-    // console.log("this is a constructor");
-    this.chain = []; // this는 Blockchain을 가리킴
-    this.pendingTxs = []; // mempool, Txs => Transactions
+    this.chain = [];
+    this.pendingTxs = [];
 
-    // Create a Genesis Block
     this.createNewBlock("00000", "glkjlkw124", 0);
   }
 
@@ -16,22 +14,18 @@ class Blockchain {
     const newBlock = {
       index: this.chain.length,
       timestamp: Date.now(),
-      parentHash: parentHash, // 키랑 value랑 같으면 생략할 수 있다. 최신문법
-      hash: hash,
+      parentHash: parentHash,
       nonce: nonce,
       transactions: this.pendingTxs,
     };
     this.chain.push(newBlock);
-    this.pendingTxs = []; // 새 블럭 만들고 나면 펜딩트랜젝션을 다시 빈 배열로 클리어해줌.
+    this.pendingTxs = [];
 
     return newBlock;
   }
 
   // Get a last block
   getLastBlock() {
-    // 잘 모르겠으면 콘솔로그 찍어보면 됨.
-    console.log("this.chain => ", this.chain);
-    console.log("this.chain.length => ", this.chain.length);
     return this.chain[this.chain.length - 1];
   }
 
@@ -45,15 +39,16 @@ class Blockchain {
     };
     this.pendingTxs.push(newTransaction);
 
-    // 해당(새롭게 만든) 트랜잭션이 몇 번째 블록에서 추가 되었는지 알려주는 코드이다.
     return this.getLastBlock()["index"] + 1;
   }
 
+  // 조금만 수정해도 해쉬가 완전히 바뀌기 때문에 변화를 쉽게 알아차릴 수 있다.
+  // Same input -> same hash output
   hashBlock(previousBlockHash, currentBlockData, nonce) {
+    // parameter로 받아온 3개 정보를 하나의 string으로 만들어준다.
+    // currentBlockData는 object or array이기 때문에 JSON.stringify를 사용해서 string으로 만들어줌.
     const stringData =
       previousBlockHash + JSON.stringify(currentBlockData) + nonce.toString();
-
-    // console.log(stringData);
 
     const hashedData = sha256(stringData);
     return hashedData;

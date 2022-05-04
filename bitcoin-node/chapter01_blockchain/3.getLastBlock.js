@@ -2,8 +2,8 @@
 class Blockchain {
   constructor() {
     console.log("this is a constructor");
-    this.chain = []; // this는 Blockchain을 가리킴
-    this.pendingTxs = []; // mempool, Txs => Transactions
+    this.chain = []; 
+    this.pendingTxs = []; 
 
     // Create a Genesis Block
     this.createNewBlock("00000", "glkjlkw124", 0);
@@ -14,13 +14,13 @@ class Blockchain {
     const newBlock = {
       index: this.chain.length,
       timestamp: Date.now(),
-      parentHash: parentHash, // 키랑 value랑 같으면 생략할 수 있다. 최신문법
+      parentHash: parentHash, 
       hash: hash,
       nonce: nonce,
       transactions: this.pendingTxs,
     };
     this.chain.push(newBlock);
-    this.pendingTxs = []; // 새 블럭 만들고 나면 펜딩트랜젝션을 다시 빈 배열로 클리어해줌.
+    this.pendingTxs = []; 
 
     return newBlock;
   }

@@ -9,18 +9,18 @@ class Blockchain {
   }
 
   // 클래스 안에 있는 메소드(함수)
-  createNewBlock(parentHash, hash, nonce) {
+  createNewBlock(previousBlockHash, hash, nonce) {
     // Create a new block  블록은 다음과 같은 정보를 가지고 있음.
     const newBlock = {
       index: this.chain.length,
       timestamp: Date.now(),
-      parentHash: parentHash,
+      previousBlockHash: previousBlockHash,
       hash: hash,
       nonce: nonce,
       transactions: this.pendingTxs,
     };
     this.chain.push(newBlock);
-    this.pendingTxs = []; 
+    this.pendingTxs = [];
 
     return newBlock;
   }

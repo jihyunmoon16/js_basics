@@ -51,15 +51,14 @@ class Blockchain {
   // Proof of Work
   pow(previousBlockHash, currentBlockData) {
     let nonce = 0;
-
     let hashVal = this.hashBlock(previousBlockHash, currentBlockData, nonce);
 
-    while (hashVal.substring(0, 1) !== "0") {
+    // while (hashVal.substring(0, 3) !== "000") {
+    while (!hashVal.startsWith("0000")) {
       nonce++;
       hashVal = this.hashBlock(previousBlockHash, currentBlockData, nonce);
-      console.log("hashValue ==> ", hashVal);
+      console.log("hashVal", hashVal);
     }
-
     return nonce;
   }
 }

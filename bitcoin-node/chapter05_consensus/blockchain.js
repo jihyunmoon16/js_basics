@@ -12,7 +12,7 @@ class Blockchain {
     this.networkNodes = [];
 
     // Genesis Block(블록체인의 가장 첫 번째 블록)을 생성하는 코드
-    this.createNewBlock("", "", 0);
+    this.createNewBlock("", "", 100);
   }
 
   // 새로운 블록을 만드는 코드
@@ -37,6 +37,7 @@ class Blockchain {
   }
 
   // 새로운 트랜잭션을 생성하는 코드
+  // Refactoring
   createNewTransaction(amount, sender, recipient) {
     const newTransaction = {
       transactionId: uuidv4().split("-").join(""),
@@ -44,9 +45,13 @@ class Blockchain {
       sender: sender,
       recipient: recipient,
     };
-    this.pendingTxs.push(newTransaction);
 
-    // 해당(새롭게 만든) 트랜잭션이 몇 번째 블록에서 추가 되었는지 알려주는 코드이다.
+    return newTransaction;
+  }
+
+  // Refactoring
+  addNewTxToPendingTx(newTx) {
+    this.pendingTxs.push(newTx);
     return this.getLastBlock()["index"] + 1;
   }
 
@@ -68,6 +73,44 @@ class Blockchain {
       console.log("hashVal", hashVal);
     }
     return nonce;
+  }
+
+  // Check if blockchain is valid or not
+  chainIsValid(blockchain) {
+    let validChain = true;
+
+    for (let i = 1; i < blockchain.length; i++) {
+      const currentBlock = blockchain[i];
+      const prevBlock = blockchain[i - 1];
+
+      // Make sure that each block starts with consecutive two zeros;
+      const blockHash = this.hashBlock(
+        prevBlock["hash"],
+        {
+          transactions: currentBlock["transactions"],
+          index: currentBlock["index"],
+        },
+        currentBlock["nonce"]
+      );
+
+      if (!blockHash.startsWith("00")) {
+        validChain = false;
+      }
+      console.log("previousBlockHash => ", prevBlock["hash"]);
+      console.log("currentBlockHash => ", currentBlock["hash"]);
+    }
+
+    // Check Genesis Block validity
+    const genesisBlock = blockchain[0];
+    const correctNonce = genesisBlock["nonce"] === 100;
+    const correctParentHash = genesisBlock["previousBlockHash"] === "";
+    const correctHash = genesisBlock["hash"] === "";
+    const correctTxs = genesisBlock["transactions"].length === 0;
+
+    if (!correctNonce || !correctParentHash || !correctHash || !correctTxs)
+      validChain = false;
+
+    return validChain;
   }
 }
 

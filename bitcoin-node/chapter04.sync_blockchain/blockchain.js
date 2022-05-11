@@ -37,6 +37,7 @@ class Blockchain {
   }
 
   // 새로운 트랜잭션을 생성하는 코드
+  // Refactoring
   createNewTransaction(amount, sender, recipient) {
     const newTransaction = {
       transactionId: uuidv4().split("-").join(""),
@@ -44,9 +45,13 @@ class Blockchain {
       sender: sender,
       recipient: recipient,
     };
-    this.pendingTxs.push(newTransaction);
 
-    // 해당(새롭게 만든) 트랜잭션이 몇 번째 블록에서 추가 되었는지 알려주는 코드이다.
+    return newTransaction;
+  }
+
+  // Refactoring
+  addNewTxToPendingTx(newTx) {
+    this.pendingTxs.push(newTx);
     return this.getLastBlock()["index"] + 1;
   }
 

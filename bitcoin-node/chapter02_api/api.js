@@ -45,7 +45,7 @@ app.get("/mine", (req, res) => {
   };
 
   // 10. 논스 값을 구하기 위해 pow 메서드를 실행합니다. 인자로는 이전 블록 해쉬 값과 현재 블록 데이터
-  // 정보입니다. previousBlockHash는 구혀져있고 currentBlockData 정보만 확인하면 됩니다
+  // 정보입니다. previousBlockHash는 구해져있고 currentBlockData 정보만 확인하면 됩니다
   const nonce = bitcoin.pow(previousBlockHash, currentBlockData);
 
   // 12. 블록해쉬 정보를 구하기 위해 3개의 인자 previousBlockHash, currentBlockData, nonce
